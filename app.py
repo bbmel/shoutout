@@ -4,13 +4,22 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/mgravier/Desktop/shoutout/shoutout.db'
+app.config['DEBUG'] = True
+
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    username = db.Column(db.String(30))
+    image = db.Column(db.String(100))
+    password = db.Column(db.String(50))
 
 @app.route('/')
 def index():
@@ -30,4 +39,3 @@ def register():
 
 if __name__ == '__main__':
     manager.run()
-    app.run(debug=True)
