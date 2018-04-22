@@ -1,5 +1,6 @@
 # shoutout
 
-![Alt text](color_logo_with_background_resize.png?raw=true "logo")
+![ScreenShot](https://raw.github.com/bbmel/shoutout/master/color_logo_with_background_resize.png)
+
 
 similar to Twitter
