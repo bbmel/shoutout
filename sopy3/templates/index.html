@@ -40,7 +40,7 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li class=""><a href="./register">sign up</a></li>
-					<li class=""><a href="#login" data-toggle="modal" data-keyboard="false">Login</a></li>
+					<li class=""><a href="#login" data-toggle="modal" data-keyboard="false">login</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -64,13 +64,22 @@
 											<a href="./">shoutout</a>
 										</h3>
 								</div>
-								<form method="POST" action="{{ url_for('index') }}">
+								<form method="POST" action="{{ url_for('login') }}">
+									{% if message %}
+										<span style="color:red;">{{ message }}</li>
+									{% endif %}
 									{{ form.csrf_token }}
 									<div class="form-group">
 										{{ form.username(class='form-control', placeholder='username') }}
+										{% for error in form.username.errors %}
+											<li style="color:red;">{{ error }}</li>
+										{% endfor %}
 									</div>
 									<div class="form-group">
 										{{ form.password(class='form-control', placeholder='password') }}
+										{% for error in form.password.errors %}
+											<li style="color:red;">{{ error }}</li>
+										{% endfor %}
 									</div>
 									<div class="form-group">
 										<div class="checkbox-inline">

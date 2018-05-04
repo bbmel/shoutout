@@ -96,14 +96,14 @@ blockquote {
     font-size: 13px;
     border-left: 3px solid rgba(51, 183, 112, .5);
 }
-.pagination>.active>a, .pagination>.active>a:focus, 
-.pagination>.active>a:hover, .pagination>.active>span, 
+.pagination>.active>a, .pagination>.active>a:focus,
+.pagination>.active>a:hover, .pagination>.active>span,
 .pagination>.active>span:focus, .pagination>.active>span:hover {
-    background-color: #0084b4; 
+    background-color: #0084b4;
     border-color: rgba(51, 183, 112, .5);
 }
 body > nav {
-    border-radius: 0 !important; 
+    border-radius: 0 !important;
 }
 #page {
     padding-top: 70px;
