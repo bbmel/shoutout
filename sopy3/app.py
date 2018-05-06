@@ -9,6 +9,8 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
+from datetime import datetime
+
 
 app = Flask(__name__)
 
@@ -19,6 +21,7 @@ app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'sdakfjhddsaklfjhdfjhjkcdksajfhab'
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
@@ -36,6 +39,14 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(30))
     image = db.Column(db.String(100))
     password = db.Column(db.String(50))
+    join_date = db.Column(db.DateTime)
+
+class Shoutout(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = name = db.Column(db.String(200))
+    date_created = db.Column(db.DateTime)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -82,8 +93,15 @@ def login():
     return render_template('index.html', form=form)
 
 @app.route('/profile')
+@login_required
 def profile():
-    return render_template('profile.html')
+    return render_template('profile.html', current_user=current_user)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/timeline')
 def timeline():
@@ -97,7 +115,7 @@ def register():
         image_filename = photos.save(form.image.data)
         image_url = photos.url(image_filename)
 
-        new_user = User(name=form.name.data, username=form.username.data, image=image_url, password=generate_password_hash(form.password.data))
+        new_user = User(name=form.name.data, username=form.username.data, image=image_url, password=generate_password_hash(form.password.data), join_date=datetime.now())
         db.session.add(new_user)
         db.session.commit()
 
