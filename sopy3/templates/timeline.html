@@ -97,7 +97,7 @@
 														<small><em>@{{ shoutout.user.username }}</em></small>
 													</div>
 													<div class="col-lg-2 text-right">
-														15m
+														{{ (current_time - shoutout.date_created)|time_since }}
 													</div>
 												</div>
 												<div class="row pad">
@@ -176,7 +176,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title">Post New Message</h4>
 						</div>
-						<form action="{{ url_for('post_tweet') }}" method="POST">
+						<form action="{{ url_for('post_shoutout') }}" method="POST">
 							<div class="modal-body">
 								<div class="row">
 									<div class="col-lg-8 col-lg-offset-2">

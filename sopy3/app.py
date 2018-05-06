@@ -116,9 +116,10 @@ def timeline():
     user_id = current_user.id
     shoutouts = Shoutout.query.filter_by(user_id=user_id).order_by(Shoutout.date_created.desc()).all() # order by most recent shoutout
 
+    current_time = datetime.now()
 
 
-    return render_template('timeline.html', form=form, shoutouts=shoutouts)
+    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time)
 
 @app.route('/post_shoutout', methods=['POST'])
 @login_required
@@ -130,6 +131,24 @@ def post_shoutout():
         db.session.add(shoutout)
         db.session.commit()
         return redirect(url_for('timeline'))
+
+@app.template_filter('time_since')
+def time_since(delta):
+
+    seconds = delta.total_seconds()
+
+    days, seconds = divmod(seconds, 86400)
+    hours, seconds = divmod(seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+
+    if days > 0:
+        return '%dd' % (days)
+    elif hours > 0:
+        return '%dh' % (hours)
+    elif minutes > 0:
+        return '%dm' % (minutes)
+    else:
+        return 'Just now'
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
