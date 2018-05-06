@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import InputRequired, Length
 from flask_wtf.file import FileField, FileAllowed
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):
 class Shoutout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    text = name = db.Column(db.String(200))
+    text = db.Column(db.String(200))
     date_created = db.Column(db.DateTime)
 
 
@@ -62,6 +62,9 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired('username required'), Length(max=100, message='Username cannot exceed 100 characters.')])
     password = PasswordField('Password', validators=[InputRequired('password required')])
     remember = BooleanField('Remember me')
+
+class ShoutoutForm(FlaskForm):
+    text = TextAreaField('Shoutout', validators=[InputRequired('shoutout required')])
 
 
 @app.route('/')
@@ -105,7 +108,19 @@ def logout():
 
 @app.route('/timeline')
 def timeline():
-    return render_template('timeline.html')
+    form = ShoutoutForm()
+    return render_template('timeline.html', form=form)
+
+@app.route('/post_shoutout', methods=['POST'])
+@login_required
+def post_shoutout():
+    form = ShoutoutForm()
+
+    if form.validate():
+        shoutout = Shoutout(user_id=current_user.id, text=form.text.data, date_created=datetime.now())
+        db.session.add(shoutout)
+        db.session.commit()
+        return redirect(url_for('timeline'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

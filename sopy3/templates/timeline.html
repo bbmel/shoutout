@@ -36,9 +36,9 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li class="active"><a href="./timeline.html">Timeline</a></li>
-						<li class=""><a href="./profile.html">My Profile</a></li>
-						<li class=""><a href="">Logout</a></li>
+						<li class="active"><a href="./timeline.html">timeline</a></li>
+						<li class=""><a href="./profile.html">my profile</a></li>
+						<li class=""><a href="">logout</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div>
@@ -47,7 +47,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h3 class="text-center bold">Timeline</h3>
+					<h3 class="text-center bold">timeline</h3>
 				</div>
 
 				<div class="col-lg-3">
@@ -55,7 +55,7 @@
 						<div class="panel-body">
 							<div class="row pad">
 								<div class="col-lg-12">
-									<img src="{{ url_for('static', filename='imgs/anonymous.png') }}" class="img-responsive img-circle center-block" alt="Image" />
+									<img src="{{ current_user.image }}" class="img-responsive img-circle center-block" alt="Image" />
 								</div>
 							</div>
 							<div class="row pad">
@@ -75,7 +75,7 @@
 						</div>
 						<ul class="list-group">
 							<a class="list-group-item" data-toggle="modal" href="#newPost" data-backdrop="static" data-keboard="false">
-								<i class="glyphicon glyphicon-plus-sign"></i> Post New Message
+								<i class="glyphicon glyphicon-plus-sign"></i> Post Shoutout
 							</a>
 						</ul>
 					</div>
@@ -163,7 +163,7 @@
 											<div class="row">
 												<div class="col-lg-10">
 													<!-- <i class="glyphicon glyphicon-user"></i>  -->
-													<img src="{{ url_for('static', filename='imgs/anonymous.png') }}" style="width: 30px; height: 30px;" class="img-circle">
+													<img src="{{ current_user.image }}" style="width: 30px; height: 30px;" class="img-circle">
 													<strong>Ashton Dennis</strong>
 													<small><em>@ashtonDennis</em></small>
 												</div>
@@ -258,7 +258,7 @@
 			<footer>
 				<div class="row pad">
 					<div class="col-lg-12 text-center">
-						Copyright &copy; 2017 <strong> <a href="./">shoutout</a></strong>
+						Copyright &copy; 2018 <strong> <a href="./">shoutout</a></strong>
 					</div>
 				</div>
 			</footer>
@@ -268,29 +268,32 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Post New Message</h4>
+							<h4 class="modal-title">Post Shoutout</h4>
 						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-lg-8 col-lg-offset-2">
-									<div class="form-group">
-										<label>Enter new <a href="./">shoutout</a> post</label>
-										<textarea name="message" id="message" class="form-control" rows="6" required="required" placeholder="Enter your new message here."></textarea>
-									</div>
-									<div class="form-group">
-										By posting on our platform, you agree to our <a href="#">Terms and Conditions</a>.
+						<form action="{{ url_for('post_shoutout') }}" method="POST">
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-8 col-lg-offset-2">
+										<div class="form-group">
+											{{ form.csrf_token }}
+											<label>Enter new shoutout</label>
+											{{ form.text(class='form-control', rows=6, required='required', placeholder='Type your shoutout here :-)') }}
+										</div>
+										<div class="form-group">
+											By posting on our platform, you agree to our <a href="#">Terms and Conditions</a>.
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">
-								<i class="glyphicon glyphicon-ban-circle"></i> Close
-							</button>
-							<button type="button" class="btn btn-primary" data-dismiss="modal">
-								<i class="glyphicon glyphicon-send"></i> Post
-							</button>
-						</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">
+									<i class="glyphicon glyphicon-ban-circle"></i> Close
+								</button>
+								<button type="submit" class="btn btn-primary">
+									<i class="glyphicon glyphicon-send"></i> Post
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
