@@ -41,6 +41,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(50))
     join_date = db.Column(db.DateTime)
 
+    # back reference in User that points to Shoutout
+    shoutous = db.relationship('Shoutout', backref='user', lazy='dynamic')
+
 class Shoutout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -109,7 +112,13 @@ def logout():
 @app.route('/timeline')
 def timeline():
     form = ShoutoutForm()
-    return render_template('timeline.html', form=form)
+
+    user_id = current_user.id
+    shoutouts = Shoutout.query.filter_by(user_id=user_id).order_by(Shoutout.date_created.desc()).all() # order by most recent shoutout
+
+
+
+    return render_template('timeline.html', form=form, shoutouts=shoutouts)
 
 @app.route('/post_shoutout', methods=['POST'])
 @login_required
