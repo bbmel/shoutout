@@ -174,16 +174,16 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Post Shoutout</h4>
+							<h4 class="modal-title">Post New Message</h4>
 						</div>
-						<form action="{{ url_for('post_shoutout') }}" method="POST">
+						<form action="{{ url_for('post_tweet') }}" method="POST">
 							<div class="modal-body">
 								<div class="row">
 									<div class="col-lg-8 col-lg-offset-2">
 										<div class="form-group">
 											{{ form.csrf_token }}
-											<label>Enter new shoutout</label>
-											{{ form.text(class='form-control', rows=6, required='required', placeholder='Type your shoutout here :-)') }}
+											<label>Enter new shoutout post</label>
+											{{ form.text(class='form-control', rows=6, required='required', placeholder='Enter your new shoutout here :-)') }}
 										</div>
 										<div class="form-group">
 											By posting on our platform, you agree to our <a href="#">Terms and Conditions</a>.
