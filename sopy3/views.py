@@ -1,7 +1,7 @@
 from app import app, photos, db
 from models import User, Shoutout
 from forms import RegisterForm, LoginForm, ShoutoutForm
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_login import login_required, login_user, current_user, logout_user
@@ -45,17 +45,26 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/timeline')
-def timeline():
+@app.route('/timeline', defaults={'username' : None})
+@app.route('/timeline/<username>') # generalizes the timeline
+def timeline(username):
     form = ShoutoutForm()
 
-    user_id = current_user.id
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            abort(404)
+        user_id = user_id
+    else:
+        user = current_user
+        user_id = current_user.id
+
     shoutouts = Shoutout.query.filter_by(user_id=user_id).order_by(Shoutout.date_created.desc()).all() # order by most recent shoutout
-
     current_time = datetime.now()
+    total_shoutouts = len(shoutouts)
 
 
-    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time)
+    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time, current_user=user, total_shoutouts=total_shoutouts)
 
 @app.route('/post_shoutout', methods=['POST'])
 @login_required
