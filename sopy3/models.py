@@ -1,6 +1,11 @@
 from app import db, login_manager
 from flask_login import UserMixin
 
+followers = db.Table('follower',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followee_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -11,6 +16,11 @@ class User(UserMixin, db.Model):
 
     # back reference in User that points to Shoutout
     shoutous = db.relationship('Shoutout', backref='user', lazy='dynamic')
+
+    following = db.relationship('User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followee_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
 class Shoutout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
