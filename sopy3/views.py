@@ -34,10 +34,21 @@ def login():
     # if the form isn't validated
     return render_template('index.html', form=form)
 
-@app.route('/profile')
-@login_required
-def profile():
-    return render_template('profile.html', current_user=current_user)
+@app.route('/profile', defaults={'username' : None})
+@app.route('/profile/<username>')
+def profile(username):
+
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            abort(404)
+    else:
+        user = current_user
+
+    shoutouts = Shoutout.query.filter_by(user=user).order_by(Shoutout.date_created.desc()).all()
+    current_time = datetime.now()
+
+    return render_template('profile.html', current_user=user, shoutouts=shoutouts, current_time=current_time)
 
 @app.route('/logout')
 @login_required
@@ -54,12 +65,10 @@ def timeline(username):
         user = User.query.filter_by(username=username).first()
         if not user:
             abort(404)
-        user_id = user_id
     else:
         user = current_user
-        user_id = current_user.id
 
-    shoutouts = Shoutout.query.filter_by(user_id=user_id).order_by(Shoutout.date_created.desc()).all() # order by most recent shoutout
+    shoutouts = Shoutout.query.filter_by(user=user).order_by(Shoutout.date_created.desc()).all() # order by most recent shoutout
     current_time = datetime.now()
     total_shoutouts = len(shoutouts)
 
