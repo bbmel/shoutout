@@ -113,7 +113,7 @@
 													<div class="col-lg-10">
 														<div>
 															<strong class="mid">{{ shoutout.user.name }}</strong>
-															<small>@{{ shoutout.user.username }}</em></small>
+															<small><em><a href="{{ url_for('profile', username=shoutout.user.username) }}">@{{ shoutout.user.username }}</a></em></small>
 															{{ (current_time - shoutout.date_created)|time_since }}
 														</div>
 														<div class="pad">
@@ -136,7 +136,7 @@
 													<div class="col-lg-10">
 														<div>
 															<strong class="mid">{{ follower.name }}</strong>
-															<small><em>@{{ follower.username }}</em></small>
+															<small><em><a href="{{ url_for('profile', username=follower.username) }}">@{{ follower.username }}</a></em></small>
 														</div>
 														<div class="row pad">
 															<hr />
