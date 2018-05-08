@@ -56,7 +56,10 @@ def profile(username):
         display_follow = False
 
 
-    return render_template('profile.html', current_user=user, shoutouts=shoutouts, current_time=current_time, followed_by=followed_by, display_follow=display_follow)
+    who_to_watch = User.query.filter(User.id != user.id).order_by(db.func.random()).limit(4).all()
+
+
+    return render_template('profile.html', current_user=user, shoutouts=shoutouts, current_time=current_time, followed_by=followed_by, display_follow=display_follow, who_to_watch=who_to_watch)
 
 @app.route('/logout')
 @login_required
@@ -82,12 +85,12 @@ def timeline(username):
         shoutouts = Shoutout.query.join(followers, (followers.c.followee_id == Shoutout.user_id)).filter(followers.c.follower_id == current_user.id).order_by(Shoutout.date_created.desc()).all()
         total_shoutouts = Shoutout.query.filter_by(user=user).order_by(Shoutout.date_created.desc()).count()
 
-
+    who_to_watch = User.query.filter(User.id != user.id).order_by(db.func.random()).limit(4).all()
     current_time = datetime.now()
 
 
 
-    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time, current_user=user, total_shoutouts=total_shoutouts)
+    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time, current_user=user, total_shoutouts=total_shoutouts, who_to_watch=who_to_watch)
 
 @app.route('/post_shoutout', methods=['POST'])
 @login_required
