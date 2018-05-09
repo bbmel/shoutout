@@ -39,8 +39,11 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li class=""><a href="{{ url_for('register') }}">sign up</a></li>
-						<li class=""><a href="#login" data-toggle="modal" data-keyboard="false">login</a></li>
+						<li><a href="{{ url_for('register') }}">sign up</a></li>
+						<li><a href="#login" data-toggle="modal" data-keyboard="false">login</a></li>
+						<li><a href="{{ url_for('timeline') }}">timeline</a></li>
+						<li><a href="{{ url_for('profile') }}">my profile</a></li>
+						<li><a href="{{ url_for('logout') }}">logout</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div>
@@ -49,8 +52,6 @@
 		<div class="container">
 
       {% block content %}{% endblock %}
-
-
 
 			<footer>
 				<div class="row pad">
