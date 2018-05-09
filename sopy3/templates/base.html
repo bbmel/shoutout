@@ -39,11 +39,14 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav navbar-right">
+						{% if not logged_in_user.is_authenticated %}
 						<li><a href="{{ url_for('register') }}">sign up</a></li>
 						<li><a href="#login" data-toggle="modal" data-keyboard="false">login</a></li>
+						{% else %}
 						<li><a href="{{ url_for('timeline') }}">timeline</a></li>
 						<li><a href="{{ url_for('profile') }}">my profile</a></li>
 						<li><a href="{{ url_for('logout') }}">logout</a></li>
+						{% endif %}
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div>

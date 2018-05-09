@@ -10,7 +10,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 def index():
     form = LoginForm()
 
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, logged_in_user=current_user)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -59,7 +59,7 @@ def profile(username):
     who_to_watch = User.query.filter(User.id != user.id).order_by(db.func.random()).limit(4).all()
 
 
-    return render_template('profile.html', current_user=user, shoutouts=shoutouts, current_time=current_time, followed_by=followed_by, display_follow=display_follow, who_to_watch=who_to_watch)
+    return render_template('profile.html', current_user=user, shoutouts=shoutouts, current_time=current_time, followed_by=followed_by, display_follow=display_follow, who_to_watch=who_to_watch, logged_in_user=current_user)
 
 @app.route('/logout')
 @login_required
@@ -90,7 +90,7 @@ def timeline(username):
 
 
 
-    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time, current_user=user, total_shoutouts=total_shoutouts, who_to_watch=who_to_watch)
+    return render_template('timeline.html', form=form, shoutouts=shoutouts, current_time=current_time, current_user=user, total_shoutouts=total_shoutouts, who_to_watch=who_to_watch, logged_in_user=current_user)
 
 @app.route('/post_shoutout', methods=['POST'])
 @login_required
