@@ -17,19 +17,19 @@
 									</div>
 									<form method="POST" action="{{ url_for('login') }}">
 									    {% if message %}
-									    	<span style="color:red;">{{ message }}</span>
+									    	<span style="color:blue;">{{ message }}</span>
 									    {% endif %}
 										{{ form.csrf_token }}
 										<div class="form-group">
 											{{ form.username(class='form-control', placeholder='username') }}
 											{% for error in form.username.errors %}
-					    						<li style="color:red;">{{ error }}</li>
+					    						<li style="color:blue;">{{ error }}</li>
 					    					{% endfor %}
 										</div>
 										<div class="form-group">
 											{{ form.password(class='form-control', placeholder='password') }}
 											{% for error in form.password.errors %}
-					    						<li style="color:red;">{{ error }}</li>
+					    						<li style="color:blue;">{{ error }}</li>
 					    					{% endfor %}
 										</div>
 										<div class="form-group">
